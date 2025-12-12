@@ -75,16 +75,22 @@ a:focus{outline: none; box-shadow: var(--ring)}
 
 .hero-art{position:relative; min-height: 420px}
 .phone{
-  position:relative;
-  width:min(340px, 90%);
+  position: relative;
+  width: min(360px, 92%);
   margin: 0 auto;
   border-radius: 50px;
   background: #111827;
   padding: 14px;
   box-shadow: 0 20px 80px rgba(0,0,0,.5);
-  z-index:2;
 }
-.phone img{display:block; width:100%; border-radius: 18px; aspect-ratio: 9/19; object-fit: cover; background:#0f172a}
+.phone img{
+  display: block;
+  width: 100%;
+  height: auto;          /* preserve natural aspect ratio */
+  border-radius: 18px;
+  object-fit: contain;   /* NEVER crop */
+  background: transparent;
+}
 .gradient-blob{
   position:absolute; inset:auto 0 0 0; height: 60%; 
   background: radial-gradient(closest-side, rgba(14,165,233,.25), transparent 70%);
