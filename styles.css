@@ -80,7 +80,7 @@ a:focus{outline: none; box-shadow: var(--ring)}
 }
 .hero h1{font-size: clamp(2.2rem, 5vw, 3.4rem); line-height:1.05; margin:0 0 10px}
 .lead{font-size: clamp(1rem, 2.2vw, 1.25rem); color:var(--muted); max-width:52ch}
-.cta-row{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:16px}
+.cta-row{padding-left: 30px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:16px}
 
 .hero-art{position:relative; min-height: 420px}
 
@@ -198,4 +198,146 @@ a:focus{outline: none; box-shadow: var(--ring)}
   .features{grid-template-columns: 1fr}
   .nav a:not(.btn){display:none}
   .store-badge img{height:36px}
+}
+
+/* Support page additions */
+
+.support-page {
+  color:var(--ink);
+  background: radial-gradient(1200px 600px at 75% -20%, rgba(14, 165, 233, .2), transparent 60%), 
+             linear-gradient(180deg, #0b1220, #0b1220 300px, #0c1627 100%);
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.support-list {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.support-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+/* .support-card::before {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 48px;
+  background: linear-gradient(90deg, #22d3ee, #0ea5e9);
+  border-radius: 999px;
+  margin-bottom: 14px;
+} */
+
+.support-controls input {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.35);
+  background: #f8fafc;
+  color: rgba(15, 23, 42, 0.85);
+  font-size: 1.05rem;
+}
+
+.support-controls input::placeholder {
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.support-controls input:focus {
+  outline: none;
+  border-color: #22d3ee;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.35);
+}
+
+.support-reassurance {
+  padding-top: 20px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.currency {
+  font-size: 1.2rem;
+  opacity: .8;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* -----------------------------------------
+   Highlighted Support Card
+------------------------------------------ */
+
+.support-highlight {
+  margin-top: 32px;
+}
+
+.support-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.10)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  padding: 32px;
+}
+
+.support-card h2 {
+  font-size: 1.7rem;
+  margin-bottom: 10px;
+}
+
+.support-card p,
+.support-card label {
+  color: #f8fafc;
+}
+
+.support-card .muted {
+  font-size: 0.95rem;
+}
+
+/* Support page button contrast fixes */
+
+.support-card .btn-outline {
+  background: rgba(15, 23, 42, 0.85);
+  color: #e5e7eb;
+  border: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.support-card .btn-outline:hover {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+/* FAQ accordion */
+.faq-question {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  margin-top: 8px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(148,163,184,.15);
+  border-radius: 10px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.faq-answer {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .25s ease;
+  padding: 0 12px;
+}
+
+.faq-answer p {
+  margin: 10px 0;
+  color: var(--muted);
 }

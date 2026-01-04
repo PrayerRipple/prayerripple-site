@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Support the Mission | PrayerRipple</title>
+
+  <meta name="description" content="Support the mission of PrayerRipple and help keep prayer free and accessible for everyone." />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="icon" type="image/png" href="../assets/favicon-96x96.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body class="support-page">
+
+<header class="site-header container">
+  <a href="../index.html" class="brand">
+    <img src="../assets/logo.svg" alt="PrayerRipple logo" class="logo" />
+    <span class="brand-name">PrayerRipple</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html/#features">Features</a>
+    <a href="/app/index.html">Get the app</a>
+    <a class="btn btn-outline" href="https://login.prayerripple.com">Community Admin Login</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="admin">
+    <div class="card">
+      <h1>Support the Mission</h1>
+      <p class="lead">
+        PrayerRipple exists to help people come together in prayer — freely,
+        reverently, and without pressure.
+      </p>
+
+      <p>
+        We believe prayer should never feel gated, commercialized, or transactional.
+        That’s why all PrayerRipple features are fully available to everyone.
+      </p>
+
+      <p>
+        If PrayerRipple has been meaningful to you, we invite you — completely
+        optionally — to help support the mission.
+      </p>
+    </div>
+  </section>
+
+  <section class="admin">
+    <div class="card">
+      <h2>How your support helps</h2>
+      <ul class="support-list">
+        <li>Secure hosting and infrastructure</li>
+        <li>Ongoing development and improvements</li>
+        <li>Notifications, messaging, and media storage</li>
+        <li>Scaling responsibly as more communities join</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Support Options Card (insert inside your existing layout) -->
+  <section class="admin support-highlight">
+    <div class="card support-card">
+      <h2>Support the Mission</h2>
+  
+      <div class="support-controls">
+        <span class="currency">$</span>
+        <input
+          id="supportAmount"
+          type="number"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          placeholder="Amount (USD)"
+          aria-label="Support amount in US dollars"
+        />
+      </div>
+  
+      <div class="cta-row">
+        <button class="btn btn-primary" id="btnGiveOnce" type="button">
+          Give once
+        </button>
+  
+        <button class="btn btn-primary" id="btnGiveMonthly" type="button">
+          Give monthly
+        </button>
+      </div>
+
+      <p class="support-reassurance">
+        Support is always optional. PrayerRipple is fully available whether you give or not.
+      </p>
+  
+      <p class="muted" id="supportStatus" style="margin-top: 10px;"></p>
+    </div>
+  </section>
+  
+  <script>
+    // ✅ Change this to your real API origin
+    const SUPPORT_API_URL = "https://api.prayerripple.com/api/support/checkout";
+  
+    const amountEl = document.getElementById("supportAmount");
+    const statusEl = document.getElementById("supportStatus");
+    const btnOnce = document.getElementById("btnGiveOnce");
+    const btnMonthly = document.getElementById("btnGiveMonthly");
+  
+    function setLoading(isLoading, message) {
+      btnOnce.disabled = isLoading;
+      btnMonthly.disabled = isLoading;
+      if (message) statusEl.textContent = message;
+    }
+  
+    function dollarsToCents(dollars) {
+      // Integer dollars only for now (matches step=1). If you later allow decimals, adjust this.
+      return Math.round(Number(dollars) * 100);
+    }
+  
+    async function startCheckout(interval) {
+      const dollars = Number(amountEl.value);
+  
+      if (!dollars || dollars < 1) {
+        statusEl.textContent = "Please enter an amount of $1 or more.";
+        amountEl.focus();
+        return;
+      }
+  
+      const amount = dollarsToCents(dollars);
+  
+      setLoading(true, "Sending you to secure checkout…");
+  
+      try {
+        const res = await fetch(SUPPORT_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount, interval }),
+        });
+  
+        // Handle non-2xx responses gracefully
+        if (!res.ok) {
+          let msg = "Unable to start checkout. Please try again.";
+          try {
+            const err = await res.json();
+            if (err && err.error) msg = err.error;
+          } catch {}
+          throw new Error(msg);
+        }
+  
+        const data = await res.json();
+  
+        if (!data || !data.url) {
+          throw new Error("Checkout link was not returned. Please try again.");
+        }
+  
+        // Redirect to Stripe-hosted checkout
+        window.location.href = data.url;
+      } catch (e) {
+        console.error(e);
+        setLoading(false, e.message || "Something went wrong. Please try again.");
+      }
+    }
+  
+    btnOnce.addEventListener("click", () => startCheckout("once"));
+    btnMonthly.addEventListener("click", () => startCheckout("month"));
+  
+    // Optional: hit Enter in the input to default to one-time
+    amountEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") startCheckout("once");
+    });
+  </script>
+
+  <!-- FAQ Accordion -->
+  <section class="admin">
+    <div class="card">
+      <h2>Supporter FAQ</h2>
+
+      <div class="faq">
+        <button class="faq-question">Is support required to use PrayerRipple?</button>
+        <div class="faq-answer">
+          <p>No. PrayerRipple is fully functional whether you give or not.</p>
+        </div>
+
+        <button class="faq-question">Is PrayerRipple a nonprofit?</button>
+        <div class="faq-answer">
+          <p>
+            Not yet. We are actively working toward 501(c)(3) nonprofit status.
+            Contributions at this time are not tax-deductible.
+          </p>
+        </div>
+
+        <button class="faq-question">Can I cancel monthly support?</button>
+        <div class="faq-answer">
+          <p>Yes. Monthly support can be changed or canceled at any time.</p>
+        </div>
+
+        <button class="faq-question">How is my support used?</button>
+        <div class="faq-answer">
+          <p>
+            Support helps cover infrastructure, development, and operational
+            costs required to keep PrayerRipple reliable and free.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer container">
+  <div>© <span id="year"></span> PrayerRipple • Happy Hardens Ministries, LLC</div>
+  <div class="footer-links">
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/child-safety.html">Child Safety</a>
+    <a href="mailto:support@prayerripple.com">Support</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // FAQ accordion
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("open");
+      const answer = btn.nextElementSibling;
+      answer.style.maxHeight = answer.style.maxHeight
+        ? null
+        : answer.scrollHeight + "px";
+    });
+  });
+</script>
+
+</body>
+</html>
